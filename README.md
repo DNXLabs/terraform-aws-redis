@@ -84,7 +84,6 @@ module "cache_redis" {
 | allow\_cidrs | List of CIDRs to allow connection to this DB | `list(string)` | `[]` | no |
 | allow\_security\_group\_ids | List of Security Group IDs to allow connection to this Redis | `list(string)` | `[]` | no |
 | at\_rest\_encryption\_enabled | n/a | `bool` | `false` | no |
-| auth\_token | n/a | `string` | `""` | no |
 | automatic\_failover\_enabled | n/a | `bool` | `false` | no |
 | create\_subnet\_group | Create a subnet group | `bool` | `false` | no |
 | engine | n/a | `string` | n/a | yes |
