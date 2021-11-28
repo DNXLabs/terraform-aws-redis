@@ -19,26 +19,31 @@ cache:
 ```
 
 ```hcl
-resource "aws_kms_key" "redis_key" {}
+resource "aws_kms_key" "redis_key" {
+  for_each = { for redis in local.workspace.cache.redis : redis.name => redis }
+  description = "redis-${each.value.name}"
+}
 
 resource "aws_kms_alias" "redis_alias" {
-  name          = "alias/redis-${local.workspace.environment_name}"
-  target_key_id = aws_kms_key.redis_key.key_id
+  for_each = { for redis in local.workspace.cache.redis : redis.name => redis }
+  name          = "alias/redis-${each.value.name}"
+  target_key_id = aws_kms_key.redis_key[each.key].key_id
 }
 
 module "cache_redis" {
-  source                        = "git::https://github.com/DNXLabs/terraform-aws-redis.git"
+  source                        = "git::https://github.com/DNXLabs/terraform-aws-redis.git?ref=change_ssm_sg"
   for_each                      = { for redis in local.workspace.cache.redis : redis.name => redis }
   
-  name                          = "redis-${each.value.environment_name}"
+  name                          = try(each.value.identifier_name, "redis-${each.value.name}")
   environment_name              = each.value.environment_name
   automatic_failover_enabled    = try(each.value.automatic_failover_enabled, false)
   at_rest_encryption_enabled    = try(each.value.at_rest_encryption_enabled, false)
   transit_encryption_enabled    = try(each.value.transit_encryption_enabled, false)
   multi_az_enabled              = try(each.value.multi_az_enabled, false)
+  # auth_token                    = try(each.value.auth_token, "")
   engine                        = try(each.value.engine, "redis")
   engine_version                = each.value.engine_version
-  kms_key_id                    = try(each.value.at_rest_encryption_enabled, false ) ? aws_kms_key.redis_key.arn : ""
+  kms_key_id                    = try(each.value.at_rest_encryption_enabled, false ) ? aws_kms_key.redis_key[each.key].arn : ""
   maintenance_window            = try(each.value.maintenance_window, "sun:05:00-sun:07:00")
   node_type                     = each.value.node_type
   notification_topic_arn        = try(each.value.notification_topic_arn, "")
@@ -51,10 +56,9 @@ module "cache_redis" {
   subnet_group_name             = "${each.value.environment_name}-cachesubnet"
   
   allow_security_group_ids = concat(
-    [for cluster_name in try(each.value.ecs_cluster_names, []) : module.ecs_cluster[cluster_name].ecs_nodes_secgrp_id], []
-  )
+    [for cluster_name in try(each.value.ecs_cluster_names, []) : module.ecs_cluster[cluster_name].ecs_nodes_secgrp_id], [data.aws_security_group.openvpn.id])
 
-  allow_cidrs        = try(each.value.allow_cidrs, [local.common.vpn_cidr])
+  allow_cidrs        = try(each.value.allow_cidrs, [])
   subnet_ids         = data.aws_subnet_ids.secure.ids
   vpc_id             = data.aws_vpc.selected.id
   
