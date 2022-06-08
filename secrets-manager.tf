@@ -10,7 +10,11 @@ locals {
 
 resource "aws_secretsmanager_secret" "redis" {
   count                   = var.secret_method == "secretsmanager" ? 1 : 0
+<<<<<<< HEAD
   name                    = "/cache/${var.name}"
+=======
+  name                    = "/redis/${var.name}"
+>>>>>>> c04a62814a91430591620301d22491be7589817e
   recovery_window_in_days = 0
 }
 
