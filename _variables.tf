@@ -115,3 +115,9 @@ variable "subnet_ids" {
 variable "vpc_id" {
   type = string
 }
+
+variable "secret_method" {
+  description = "Use ssm for SSM parameters store which is the default option, or secretsmanager for AWS Secrets Manager"
+  type        = string
+  default     = "ssm"
+}
