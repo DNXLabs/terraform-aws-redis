@@ -26,6 +26,7 @@ resource "aws_elasticache_replication_group" "redis" {
   snapshot_window          = var.snapshot_window
   subnet_group_name        = try(aws_elasticache_subnet_group.redis[0].name, var.subnet_group_name)
   parameter_group_name     = var.parameter_group_name
+  user_group_ids           = var.user_group_ids
 
   tags = {
     "Name"    = var.name
