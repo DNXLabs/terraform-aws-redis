@@ -103,6 +103,7 @@ module "cache_redis" {
 | subnet\_group\_name | The name of the cache subnet group to be used for the replication group | `string` | n/a | yes |
 | subnet\_ids | List of Subnet IDs for the RDS Subnet Group | `list(any)` | `[]` | no |
 | transit\_encryption\_enabled | n/a | `bool` | `false` | no |
+| user\_group\_ids | (Optional) User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid. NOTE: This argument is a set because the AWS specification allows for multiple IDs. However, in practice, AWS only allows a maximum size of one. | `set(string)` | `null` | no |
 | vpc\_id | n/a | `string` | n/a | yes |
 
 ## Outputs

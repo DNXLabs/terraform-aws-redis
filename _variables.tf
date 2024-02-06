@@ -115,3 +115,9 @@ variable "subnet_ids" {
 variable "vpc_id" {
   type = string
 }
+
+variable "user_group_ids" {
+  description = "(Optional) User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid. NOTE: This argument is a set because the AWS specification allows for multiple IDs. However, in practice, AWS only allows a maximum size of one."
+  type        = set(string)
+  default     = null
+}
