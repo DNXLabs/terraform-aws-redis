@@ -10,7 +10,7 @@ variable "automatic_failover_enabled" {
 
 variable "at_rest_encryption_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "transit_encryption_enabled" {
