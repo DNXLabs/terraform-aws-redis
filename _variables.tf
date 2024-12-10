@@ -58,7 +58,7 @@ variable "notification_topic_arn" {
   default = ""
 }
 
-variable "number_cache_clusters" {
+variable "num_cache_clusters" {
   description = "The number of cache clusters (primary and replicas) this replication group will have. If Multi-AZ is enabled, the value of this parameter must be at least 2"
   default     = 1
 }
