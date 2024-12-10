@@ -95,7 +95,7 @@ module "cache_redis" {
 | name | Name of this Redis | `string` | n/a | yes |
 | node\_type | The instance class to be used | `string` | n/a | yes |
 | notification\_topic\_arn | n/a | `string` | `""` | no |
-| number\_cache\_clusters | The number of cache clusters (primary and replicas) this replication group will have. If Multi-AZ is enabled, the value of this parameter must be at least 2 | `number` | `1` | no |
+| num\_cache\_clusters | The number of cache clusters (primary and replicas) this replication group will have. If Multi-AZ is enabled, the value of this parameter must be at least 2 | `number` | `1` | no |
 | parameter\_group\_name | The name of the parameter group to associate with this replication group | `string` | `null` | no |
 | port | Port number for this Redis | `number` | `6379` | no |
 | snapshot\_retention\_limit | The number of days for which ElastiCache will retain automatic cache cluster snapshots before deleting them | `number` | `0` | no |
